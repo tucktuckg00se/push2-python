@@ -21,8 +21,6 @@ from .constants import is_push_midi_in_port_name, is_push_midi_out_port_name, PU
     ACTION_DISPLAY_DISCONNECTED, ACTION_MIDI_CONNECTED, ACTION_MIDI_DISCONNECTED, PUSH2_MIDI_ACTIVE_SENSING_MAX_INTERVAL, ACTION_SUSTAIN_PEDAL, \
     MIDO_CONTROLCHANGE, PUSH2_SYSEX_PREFACE_BYTES, PUSH2_SYSEX_END_BYTES, DEFAULT_COLOR_PALETTE, DEFAULT_RGB_COLOR, DEFAULT_BW_COLOR
 
-from .simulator.simulator import start_simulator
-
 logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
 
 action_handler_registry = defaultdict(list)
@@ -105,6 +103,8 @@ class Push2(object):
 
         # Initialize simulator (if requested)
         if run_simulator:
+            # Imported lazily so the simulator's web dependencies stay optional
+            from .simulator.simulator import start_simulator
             self.simulator_controller = start_simulator(self, port=simulator_port, use_virtual_midi_out=simulator_use_virtual_midi_out)
 
 
